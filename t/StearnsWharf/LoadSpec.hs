@@ -1,4 +1,4 @@
-module StearnsWharf.BeamSpec
+module StearnsWharf.LoadSpec
   ( spec
   )
 where

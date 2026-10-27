@@ -110,9 +110,9 @@ instance P.Profile HatProfile where
             huca = huc * (P.area hup)
   centroid hat@TEHP { .. } = 
     let 
-      dBottom = P.centroid botPL
-      dWeb = PL.h botPl + P.centroid webPl
-      dTop = PL.h botPl 
+      dBottom = P.centroid botPl
+      dWeb = Pl.h botPl + P.centroid webPl
+      dTop = Pl.h botPl 
     in
       dBottom / 1000.0
 

@@ -1,0 +1,42 @@
+1) Building:
+
+        Lapack/Blas:
+
+                sudo apt-get install libblas-dev liblapack-dev
+
+        GMP:
+
+                sudo apt-get install libgmp3-dev   
+
+2) Make sure your .cabal test-suite stanza declares it as a build tool dependency: 
+
+        test-suite my-tests
+          type:                exitcode-stdio-1.0
+          hs-source-dirs:      test
+          main-is:             Spec.hs
+          build-depends:       base, hspec, your-package-name
+          build-tool-depends:  hspec-discover:hspec-discover   
+
+3) Run cabal update so the solver can find and build hspec-discover:
+
+        cabal update
+
+4) Rebuild:
+
+        cabal build all
+
+        Cabal will now build hspec-discover as a dependency and place it on the PATH 
+        for the test-suite build. 
+
+        The key piece is build-tool-depends — without it, Cabal v2 doesn't know 
+        it needs to make the binary available to GHC.
+
+5) ghci:
+        
+        5.1) cd into the same directory where stearnswharf.cabal resides
+
+        5.2) cabal ghci
+
+        5.3) :l src/StearnsWharf.Beam
+
+
