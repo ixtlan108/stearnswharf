@@ -174,7 +174,8 @@ emptySY = L.fromList [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 calcGeom :: Beam a -> Geom
 calcGeom (Bjlk33 beam) = N.calcGeom (n1 beam) (n2 beam)
-calcGeom _ = (Geom (Cosine 0.0) (Sine 0.0) 0.0)
+calcGeom (Bjlk11 beam) = N.calcGeom (n1 beam) (n2 beam)
+calcGeom (Bjlk32 beam) = N.calcGeom (n1 beam) (n2 beam)
 
 tg :: Cosine -> Sine -> Matrix Double
 tg (Cosine c) (Sine s) =
@@ -195,3 +196,4 @@ add2systemK m beam =
 --   myk = createK_
 -- in
 --   undefined
+--

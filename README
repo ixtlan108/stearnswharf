@@ -33,10 +33,17 @@
 
 5) ghci:
         
-        5.1) cd into the same directory where stearnswharf.cabal resides
+        5.1) Disable wrong ghci warning about missing modules when loading a .hs file:
+                
+                (That's the key detail. The warning is a known false positive in the REPL context (tracked as Cabal issue #4711))
 
-        5.2) cabal ghci
+                :set -Wno-missing-home-modules   
 
-        5.3) :l src/StearnsWharf.Beam
+        5.2) cd into the same directory where stearnswharf.cabal resides
 
+        5.3) cabal ghci
+
+        5.4) :l src/StearnsWharf.Beam
+
+        
 
