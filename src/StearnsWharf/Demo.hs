@@ -1,9 +1,13 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE OverloadedRecordDot #-}
+{-# LANGUAGE OverloadedRecordUpdate #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE StrictData #-}
+{-# LANGUAGE NoFieldSelectors #-}
 
 module StearnsWharf.Demo where
 
@@ -20,6 +24,22 @@ import qualified StearnsWharf.Node as N
 import StearnsWharf.Profile (Profile (..))
 import qualified StearnsWharf.Profile as P
 import StearnsWharf.WoodProfile
+
+data User = User
+  { id :: Int,
+    name :: String
+  }
+  deriving (Show)
+
+data User2 = User2
+  { id :: Int,
+    name :: String
+  }
+  deriving (Show)
+
+alice = User {id = 1, name = "Alice"}
+
+dx = putStrLn alice.name
 
 c24 :: WoodProfile
 c24 = createWoodProfile TEST_CLASS (Width 100) (Height 200)
@@ -97,6 +117,10 @@ bjlk2 = createK_ beam2
 bjlk3 = createK_ beam3
 
 geom = calcGeom beam1
+
+geom2 = calcGeom beam2
+
+geom3 = calcGeom beam3
 
 sy = createSY_ geom uls1
 

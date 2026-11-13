@@ -45,5 +45,78 @@
 
         5.4) :l src/StearnsWharf.Beam
 
+
+6) Better records:
+
+        6.1) In ghci:
+
+                :set -XNoFieldSelectors -XOverloadedRecordDot 
+
+        6.2) In .hs files:
+
+                {-# LANGUAGE DuplicateRecordFields #-}
+                {-# LANGUAGE OverloadedRecordDot #-}
+                {-# LANGUAGE OverloadedRecordUpdate #-}
+                {-# LANGUAGE NoFieldSelectors #-}
+                
+        6.3) To access records, use:
+
+                data User  = User  { name :: Text, uid :: Int } deriving Generic
+
+                alice = User { name = "Alice", uid = 3 }
+
+                putStrLn alice.name
+                
+        or 
+
+        6.3) To access records, use lenses:
+
+                data User  = User  { name :: Text, uid :: Int } deriving Generic
+
+                data Group = Group { name :: Text, gid :: Int } deriving Generic
+
+                -- Access via overloaded labels — no ambiguity, no TH: 
+
+                view #name (user  :: User)   -- "Alice"
+                view #name (group :: Group)  -- "eng"
+
+                set #uid 42 user
+
+                
         
+## Beregning – IPE-profil, 2 m spennvidde, 9,75 kN/m
+
+**Antakelser:** Fritt oppsatt bære (enkeltspenn), S235 (fy = 235 MPa), γM₀ = 1,0.
+
+### 1. Bøyemoment
+
+$$M_{Ed} = \frac{wL^2}{8} = \frac{9{,}75 \times 2^2}{8} = 4{,}875 \text{ kN·m}$$
+
+Krevd plastisk tverrsnittsmodul:
+
+$$W_{pl,req} = \frac{M_{Ed}}{f_y} = \frac{4{,}875 \times 10^6}{235} = 20{,}7 \text{ cm}^3$$
+
+Allerede **IPE 80** (W_pl = 24,5 cm³) er tilstrekkelig for bøyning.
+
+### 2. Defleksjon (styrer dimensjoneringen!)
+
+Tillatt defleksjon: L/250 = 2000/250 = **8 mm**
+
+Krevd tverrsnittsmoment:
+
+$$I_{req} = \frac{5wL^4}{384E \cdot \delta_{max}} = \frac{5 \times 9{,}75 \times 2000^4}{384 \times 210\,000 \times 8} \approx 1\,210 \text{ cm}^4$$
+
+| Profil | I_y (cm⁴) | δ_max (mm) | L/δ | OK? |
+|--------|-----------|------------|-----|-----|
+| IPE 160 | 869 | 11,1 | L/180 | ✗ |
+| **IPE 180** | **1 317** | **7,3** | **L/274** | **✓** |
+| IPE 200 | 1 943 | 5,0 | L/404 | ✓ |
+
+### Konklusjon
+
+**IPE 180** er den minste IPE-profilen som oppfyller både bøyning og defleksjon (L/250).
+
+> ⚠️ Selvvekten (18,8 kg/m ≈ 0,19 kN/m) er forsvinnende liten mot 9,75 kN/m og kan ignoreres. Hvis defleksjonskravet er L/300 i stedet, holder IPE 160.
+
+
 
