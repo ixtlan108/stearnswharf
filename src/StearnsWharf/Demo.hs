@@ -13,11 +13,11 @@ import StearnsWharf.Common
     Width (..),
   )
 import StearnsWharf.Load (Load (..))
-import qualified StearnsWharf.Load as L
+import StearnsWharf.Load qualified as L
 import StearnsWharf.Node hiding (calcGeom)
-import qualified StearnsWharf.Node as N
+import StearnsWharf.Node qualified as N
 import StearnsWharf.Profile (Profile (..))
-import qualified StearnsWharf.Profile as P
+import StearnsWharf.Profile qualified as P
 import StearnsWharf.WoodProfile
 
 data User = User
@@ -33,6 +33,16 @@ data User2 = User2
   deriving (Show)
 
 alice = User {id = 1, name = "Alice"}
+
+alice2 = User2 {id = 11, name = "Alice 2"}
+
+alices = [User 1 "1", User 2 "2", User 3 "3"]
+
+usr1 :: User -> String
+usr1 u = u.name
+
+ax :: [String]
+ax = map usr1 alices
 
 dx = putStrLn alice.name
 

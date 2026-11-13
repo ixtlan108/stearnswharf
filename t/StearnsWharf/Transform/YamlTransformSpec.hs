@@ -1,7 +1,4 @@
-{-# LANGUAGE NamedFieldPuns #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE StrictData #-}
 
 module StearnsWharf.Transform.YamlTransformSpec
   ( spec,

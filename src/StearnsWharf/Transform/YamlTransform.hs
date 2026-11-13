@@ -10,19 +10,21 @@ import Control.Monad.Reader
     ask,
     runReader,
   )
-import qualified Data.Map.Strict as Map
+import Data.Map.Strict qualified as Map
+import Data.Maybe (fromJust)
 import Data.Yaml
   ( FromJSON (..),
     ParseException,
     decodeFileEither,
   )
 import GHC.Generics (Generic)
-import qualified StearnsWharf.Beam as B
+import StearnsWharf.Beam qualified as B
 import StearnsWharf.Common (Height (..), Width (..))
-import qualified StearnsWharf.Load as L
-import qualified StearnsWharf.Node as N
-import qualified StearnsWharf.System as S
-import qualified StearnsWharf.WoodProfile as W
+import StearnsWharf.Load qualified as L
+import StearnsWharf.Node qualified as N
+import StearnsWharf.System (System (..))
+import StearnsWharf.System qualified as S
+import StearnsWharf.WoodProfile qualified as W
 
 data YamlNode = YamlNode
   { nid :: Int,
@@ -193,7 +195,7 @@ nodeMap nodes =
   let tnodes = map (\x -> (x.nodeId, x)) nodes
    in Map.fromList tnodes
 
-transformYamlToSystem :: YamlSystem -> S.System
+transformYamlToSystem :: YamlSystem -> System
 transformYamlToSystem ymlsystem =
   let ns = transformNodes ymlsystem.nodes
       nm = nodeMap ns
@@ -201,14 +203,14 @@ transformYamlToSystem ymlsystem =
       ldm = loadMap lds
       env = Env nm ldm
       wp = runReader (transformWoodProfiles ymlsystem.woodprofiles) env
-   in S.System
+   in System
         { S.nodes = ns,
           S.loads = lds,
           S.pointLoads = transformPointLoads nm ymlsystem.pointloads,
           S.woodProfiles = wp
         }
 
-parseYaml :: FilePath -> IO (Maybe S.System)
+parseYaml :: FilePath -> IO (Maybe System)
 parseYaml fname =
   parseYaml' fname >>= \ymlsystem ->
     case ymlsystem of
@@ -229,6 +231,11 @@ demo =
         putStrLn "OOPS"
       Just res1 ->
         putStrLn $ show res1
+
+demox :: IO System
+demox =
+  parseYaml demoFname >>= \result ->
+    pure $ fromJust result
 
 {-
 instance FromJSON System where
