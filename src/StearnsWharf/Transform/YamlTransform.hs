@@ -18,12 +18,15 @@ import Data.Yaml
     decodeFileEither,
   )
 import GHC.Generics (Generic)
-import StearnsWharf.Beam qualified as B
+import StearnsWharf.Beam (Beam (..), BeamProp (..))
 import StearnsWharf.Common (Height (..), Width (..))
+import StearnsWharf.Load (Load (..), PointLoad (..))
 import StearnsWharf.Load qualified as L
+import StearnsWharf.Node (FirstNode (..), Node (..), SecondNode (..))
 import StearnsWharf.Node qualified as N
 import StearnsWharf.System (System (..))
 import StearnsWharf.System qualified as S
+import StearnsWharf.WoodProfile (WoodProfile (..))
 import StearnsWharf.WoodProfile qualified as W
 
 data YamlNode = YamlNode
@@ -80,13 +83,13 @@ data YamlSystem = YamlSystem
   }
   deriving (Show, Eq, Generic)
 
-type NodeMap = Map.Map Int N.Node
+type NodeMap = Map.Map Int Node
 
-type LoadMap = Map.Map Int L.Load
+type LoadMap = Map.Map Int Load
 
-type REW = Reader Env [B.Beam W.WoodProfile]
+type REW = Reader Env [Beam WoodProfile]
 
-type REW2 = Reader Env (B.Beam W.WoodProfile)
+type REW2 = Reader Env (Beam WoodProfile)
 
 data Env = Env
   { getNodeMap :: NodeMap,
@@ -107,14 +110,14 @@ instance FromJSON YamlNode
 
 instance FromJSON YamlSystem
 
-transformNode :: YamlNode -> Int -> N.Node
+transformNode :: YamlNode -> Int -> Node
 transformNode yn globalIndex =
-  N.Node yn.nid yn.x yn.y (N.bitSumToDof yn.dof) globalIndex
+  Node yn.nid yn.x yn.y (N.bitSumToDof yn.dof) globalIndex
 
-transformNodes :: [YamlNode] -> [N.Node]
+transformNodes :: [YamlNode] -> [Node]
 transformNodes yns = go yns 0 []
   where
-    go :: [YamlNode] -> Int -> [N.Node] -> [N.Node]
+    go :: [YamlNode] -> Int -> [Node] -> [Node]
     go [] _ acc = acc
     go (x : xs) globalIndex acc =
       let newNode = transformNode x globalIndex
@@ -122,44 +125,44 @@ transformNodes yns = go yns 0 []
           newAcc = newNode : acc
        in go xs newGlobIndex newAcc
 
-transformLoad :: YamlLoad -> L.Load
+transformLoad :: YamlLoad -> Load
 transformLoad yl =
-  L.Load yl.lid 0.0 yl.ly1 0.0 yl.ly2 yl.f
+  Load yl.lid 0.0 yl.ly1 0.0 yl.ly2 yl.f
 
-transformLoads :: [YamlLoad] -> [L.Load]
+transformLoads :: [YamlLoad] -> [Load]
 transformLoads yls =
   map transformLoad yls
 
-transformPointLoad :: NodeMap -> YamlPointLoad -> L.PointLoad
+transformPointLoad :: NodeMap -> YamlPointLoad -> PointLoad
 transformPointLoad nm yl =
   let myNode = Map.lookup yl.pnode nm
    in case myNode of
         Just hit ->
-          L.PointLoad yl.pid yl.v yl.ang yl.pf hit
+          PointLoad yl.pid yl.v yl.ang yl.pf hit
         Nothing ->
           undefined
 
-transformPointLoads :: NodeMap -> [YamlPointLoad] -> [L.PointLoad]
+transformPointLoads :: NodeMap -> [YamlPointLoad] -> [PointLoad]
 transformPointLoads nm ploads =
   map (transformPointLoad nm) ploads
 
-loadMap :: [L.Load] -> LoadMap
+loadMap :: [Load] -> LoadMap
 loadMap lds =
   let tlds = map (\x -> (x.loadId, x)) lds
    in Map.fromList tlds
 
-createBeamProp :: NodeMap -> LoadMap -> W.WoodProfile -> B33 -> Maybe (B.BeamProp W.WoodProfile)
+createBeamProp :: NodeMap -> LoadMap -> WoodProfile -> B33 -> Maybe (BeamProp WoodProfile)
 createBeamProp nm lm wp b =
   Map.lookup b.n1 nm >>= \myn1 ->
     Map.lookup b.n2 nm >>= \myn2 ->
       let myl = Map.lookup b.ld lm
        in case myl of
             Nothing ->
-              Just $ B.BeamProp b.bid (N.FirstNode myn1) (N.SecondNode myn2) wp Nothing
+              Just $ BeamProp b.bid (FirstNode myn1) (SecondNode myn2) wp Nothing
             Just myl1 ->
-              Just $ B.BeamProp b.bid (N.FirstNode myn1) (N.SecondNode myn2) wp (Just $ L.limitStates myl1)
+              Just $ BeamProp b.bid (FirstNode myn1) (SecondNode myn2) wp (Just $ L.limitStates myl1)
 
-transformB33 :: W.WoodProfile -> B33 -> REW2
+transformB33 :: WoodProfile -> B33 -> REW2
 transformB33 wp b =
   ask >>= \curEnv ->
     let nm = curEnv.getNodeMap
@@ -169,7 +172,7 @@ transformB33 wp b =
           Nothing ->
             undefined
           Just p ->
-            pure $ B.Bjlk33 p
+            pure $ Bjlk33 p
 
 transformWoodProfile :: String -> WoodProfileInternal -> REW
 transformWoodProfile stc wpi =
@@ -190,7 +193,7 @@ parseYaml' :: FilePath -> IO (Either ParseException YamlSystem)
 parseYaml' fname =
   decodeFileEither fname -- "/home/rcs/opt/haskell/stearnswharf/tmp/demo1.yaml"
 
-nodeMap :: [N.Node] -> NodeMap
+nodeMap :: [Node] -> NodeMap
 nodeMap nodes =
   let tnodes = map (\x -> (x.nodeId, x)) nodes
    in Map.fromList tnodes
