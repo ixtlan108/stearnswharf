@@ -1,13 +1,8 @@
 {-# LANGUAGE CPP #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE NamedFieldPuns #-}
-{-# LANGUAGE OverloadedRecordDot #-}
-{-# LANGUAGE OverloadedRecordUpdate #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE StrictData #-}
-{-# LANGUAGE NoFieldSelectors #-}
+
+-- in GHC2021 and GHC2024 {-# LANGUAGE DeriveGeneric #-}
+-- in GHC2021 and GHC2024 {-# LANGUAGE NamedFieldPuns #-}
 
 module StearnsWharf.Demo where
 

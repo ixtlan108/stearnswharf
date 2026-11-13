@@ -1,3 +1,7 @@
+0) To revert to previous version:
+
+	cabal v2-update 'hackage.haskell.org,2026-10-25T12:32:33Z'
+
 1) Building:
 
         Lapack/Blas:
@@ -50,7 +54,7 @@
 
         6.1) In ghci:
 
-                :set -XNoFieldSelectors -XOverloadedRecordDot 
+                :set -XNoFieldSelectors -XOverloadedRecordDot -XDuplicateRecordFields -XNamedFieldPuns
 
         6.2) In .hs files:
 
@@ -117,6 +121,7 @@ $$I_{req} = \frac{5wL^4}{384E \cdot \delta_{max}} = \frac{5 \times 9{,}75 \times
 **IPE 180** er den minste IPE-profilen som oppfyller både bøyning og defleksjon (L/250).
 
 > ⚠️ Selvvekten (18,8 kg/m ≈ 0,19 kN/m) er forsvinnende liten mot 9,75 kN/m og kan ignoreres. Hvis defleksjonskravet er L/300 i stedet, holder IPE 160.
+
 
 
 

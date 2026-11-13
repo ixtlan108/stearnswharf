@@ -1,114 +1,155 @@
 cabal-version: 1.12
-
 -- This file has been generated from package.yaml by hpack version 0.35.0.
 --
 -- see: https://github.com/sol/hpack
 --
 -- hash: 37208a4e5dbab2ed818ba53f426ccadbaa3dc5a9e9598ae942fe9e7574f7157c
-
-name:           stearnswharf
-version:        2.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/demo3#readme>
-homepage:       https://github.com/githubuser/demo3#readme
-bug-reports:    https://github.com/githubuser/demo3/issues
-author:         Rolf C Stadheim
-maintainer:     rolf.c.stadheim@gmail.com
-copyright:      2019 Rolf C Stadheim
-license:        BSD3
-build-type:     Simple
+name: stearnswharf
+version: 2.0.0
+description: Please see the README on GitHub at <https://github.com/githubuser/demo3#readme>
+homepage: https://github.com/githubuser/demo3#readme
+bug-reports: https://github.com/githubuser/demo3/issues
+author: Rolf C Stadheim
+maintainer: rolf.c.stadheim@gmail.com
+copyright: 2019 Rolf C Stadheim
+license: BSD3
+build-type: Simple
 
 source-repository head
   type: git
   location: https://github.com/githubuser/demo3
 
 library
+  default-extensions:
+    DeriveGeneric
+    DuplicateRecordFields
+    NamedFieldPuns
+    NoFieldSelectors
+    OverloadedRecordDot
+    OverloadedStrings
+    StrictData
+
   exposed-modules:
-      StearnsWharf.Beam
-      StearnsWharf.Common
-      StearnsWharf.Demo
-      StearnsWharf.Load
-      StearnsWharf.Material
-      StearnsWharf.Node
-      StearnsWharf.Profile
-      StearnsWharf.Steel.HatProfiles
-      StearnsWharf.Steel.HUP
-      StearnsWharf.Steel.Plates
-      StearnsWharf.Steel.SteelProfiles
-      StearnsWharf.System
-      StearnsWharf.Transform.YamlTransform
-      StearnsWharf.WoodProfile
+    StearnsWharf.Beam
+    StearnsWharf.Common
+    StearnsWharf.Demo
+    StearnsWharf.Load
+    StearnsWharf.Material
+    StearnsWharf.Node
+    StearnsWharf.Profile
+    StearnsWharf.Steel.HatProfiles
+    StearnsWharf.Steel.HUP
+    StearnsWharf.Steel.Plates
+    StearnsWharf.Steel.SteelProfiles
+    StearnsWharf.System
+    StearnsWharf.Transform.YamlTransform
+    StearnsWharf.WoodProfile
+
   other-modules:
-      Paths_stearnswharf
+    Paths_stearnswharf
+
   hs-source-dirs:
-      src
+    src
+
   build-depends:
-      HUnit
-    , aeson
-    , base >=4.7 && <5
-    , cmdargs
-    , containers
-    , hmatrix
-    , hspec
-    , mtl
-    , optparse-applicative
-    , postgresql-simple
-    , utf8-string
-    , xml
-    , yaml
+    aeson,
+    base >=4.7 && <5,
+    cmdargs,
+    containers,
+    hmatrix,
+    hspec,
+    HUnit,
+    mtl,
+    optparse-applicative,
+    postgresql-simple,
+    utf8-string,
+    xml,
+    yaml
+
   default-language: Haskell2010
 
 executable stearnswharf-2.0.0
   main-is: Main.hs
   other-modules:
-      Paths_stearnswharf
+    Paths_stearnswharf
+
   hs-source-dirs:
-      app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wcompat -Widentities -Wpartial-fields -Wredundant-constraints
+    app
+
+  ghc-options:
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N
+    -Wall
+    -Wincomplete-record-updates
+    -Wincomplete-uni-patterns
+    -Wcompat
+    -Widentities
+    -Wpartial-fields
+    -Wredundant-constraints
+
   build-depends:
-      HUnit
-    , aeson
-    , base >=4.7 && <5
-    , cmdargs
-    , containers
-    , hmatrix
-    , hspec
-    , mtl
-    , optparse-applicative
-    , postgresql-simple
-    , stearnswharf
-    , utf8-string
-    , xml
-    , yaml
+    aeson,
+    base >=4.7 && <5,
+    cmdargs,
+    containers,
+    hmatrix,
+    hspec,
+    HUnit,
+    mtl,
+    optparse-applicative,
+    postgresql-simple,
+    stearnswharf,
+    utf8-string,
+    xml,
+    yaml
+
   default-language: Haskell2010
 
 test-suite stearnswharf-test
+  default-extensions:
+    DeriveGeneric
+    DuplicateRecordFields
+    NamedFieldPuns
+    NoFieldSelectors
+    OverloadedRecordDot
+    OverloadedStrings
+    StrictData
+
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      StearnsWharf.BeamSpec
-      StearnsWharf.LoadSpec
-      StearnsWharf.NodeSpec
-      StearnsWharf.Steel.HatProfilesSpec
-      StearnsWharf.SystemSpec
-      StearnsWharf.Transform.YamlTransformSpec
-      Paths_stearnswharf
+    Paths_stearnswharf
+    StearnsWharf.BeamSpec
+    StearnsWharf.LoadSpec
+    StearnsWharf.NodeSpec
+    StearnsWharf.Steel.HatProfilesSpec
+    StearnsWharf.SystemSpec
+    StearnsWharf.Transform.YamlTransformSpec
+
   hs-source-dirs:
-      t
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+    t
+
+  ghc-options:
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N
+
   build-depends:
-      HUnit
-    , aeson
-    , base >=4.7 && <5
-    , cmdargs
-    , containers
-    , hmatrix
-    , hspec
-    , mtl
-    , optparse-applicative
-    , postgresql-simple
-    , stearnswharf
-    , utf8-string
-    , xml
-    , yaml
-  build-tool-depends:  hspec-discover:hspec-discover   
+    aeson,
+    base >=4.7 && <5,
+    cmdargs,
+    containers,
+    hmatrix,
+    hspec,
+    HUnit,
+    mtl,
+    optparse-applicative,
+    postgresql-simple,
+    stearnswharf,
+    utf8-string,
+    xml,
+    yaml
+
+  build-tool-depends: hspec-discover:hspec-discover
   default-language: Haskell2010

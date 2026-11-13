@@ -4,57 +4,56 @@
 
 module StearnsWharf.Load where
 
-import StearnsWharf.Node (Node (..))
-
 -- newtype LoadId = LoadId String deriving (Show)
 
 import StearnsWharf.Common
-  ( floatEq
+  ( floatEq,
   )
+import StearnsWharf.Node (Node (..))
 
 type LoadId = Int
 
 data PointLoad = PointLoad
-  { ploadId :: LoadId
-  , plVal :: Double
-  , plAngle :: Double
-  , plFactor :: Double
-  , node :: Node
+  { ploadId :: LoadId,
+    plVal :: Double,
+    plAngle :: Double,
+    plFactor :: Double,
+    node :: Node
   }
   deriving (Show)
 
 instance Eq PointLoad where
   (==) l1 l2 =
-    (ploadId l1) == (ploadId l2)
-      && floatEq (plVal l1) (plVal l2)
-      && floatEq (plAngle l1) (plAngle l2)
-      && floatEq (plFactor l1) (plFactor l2)
-      && (node l1) == (node l2)
+    l1.ploadId == l2.ploadId
+      && floatEq l1.plVal l2.plVal
+      && floatEq l1.plAngle l2.plAngle
+      && floatEq l1.plFactor l2.plFactor
+      && l1.node == l2.node
 
 instance Ord PointLoad where
-  compare l1 l2 = compare (ploadId l1) (ploadId l2)
+  compare l1 l2 = compare l1.ploadId l2.ploadId
 
 data Load = Load
-  { loadId :: LoadId
-  , qx1 :: Double
-  , qz1 :: Double
-  , qx2 :: Double
-  , qz2 :: Double
-  , loadFactor :: Double
+  { loadId :: LoadId,
+    qx1 :: Double,
+    qz1 :: Double,
+    qx2 :: Double,
+    qz2 :: Double,
+    loadFactor :: Double
   }
   deriving (Show)
 
 instance Eq Load where
   (==) l1 l2 =
-    (loadId l1) == (loadId l2)
-      && floatEq (qx1 l1) (qx1 l2)
-      && floatEq (qz1 l1) (qz1 l2)
-      && floatEq (qx2 l1) (qx2 l2)
-      && floatEq (qz2 l1) (qz2 l2)
-      && floatEq (loadFactor l1) (loadFactor l2)
+    l1.loadId == l2.loadId
+      && floatEq l1.qx1 l2.qx1
+      && floatEq l1.qz1 l2.qz1
+      && floatEq l1.qx2 l2.qx2
+      && floatEq l1.qz2 l2.qz2
+      && floatEq l1.loadFactor l2.loadFactor
 
 instance Ord Load where
-  compare l1 l2 = compare (loadId l1) (loadId l2)
+  compare l1 l2 = compare l1.loadId l2.loadId
 
 {-
 data T a where
@@ -64,30 +63,26 @@ data T a where
  -}
 
 data LimitStates a = LimitStates
-  { uls :: a
-  , sls :: a
+  { uls :: a,
+    sls :: a
   }
   deriving (Show)
 
 instance (Eq a) => Eq (LimitStates a) where
   (==) ls1 ls2 =
-    (uls ls1) == (uls ls2)
-      && (sls ls1) == (sls ls2)
+    ls1.uls == ls2.uls
+      && ls1.sls == ls2.sls
 
 limitStates :: Load -> LimitStates Load
-limitStates ul@Load{..} =
-  let
-    sl = Load loadId (qx1 / loadFactor) (qz1 / loadFactor) (qx2 / loadFactor) (qz2 / loadFactor) 1.0
-  in
-    LimitStates ul sl
+limitStates ul@Load {..} =
+  let sl = Load loadId (qx1 / loadFactor) (qz1 / loadFactor) (qx2 / loadFactor) (qz2 / loadFactor) 1.0
+   in LimitStates ul sl
 
 limitStatesPt :: PointLoad -> LimitStates PointLoad
-limitStatesPt ul@PointLoad{plVal, plFactor} =
-  let
-    plVal' = plVal / plFactor
-    sl = ul{plVal = plVal', plFactor = 1.0}
-  in
-    LimitStates ul sl
+limitStatesPt ul@PointLoad {plVal, plFactor} =
+  let plVal' = plVal / plFactor
+      sl = ul {plVal = plVal', plFactor = 1.0}
+   in LimitStates ul sl
 
 {-   let
     sl =  Load loadId  (qx1 / loadFactor) (qz1 / loadFactor) (qx2 / loadFactor) (qz2 / loadFactor) 1.0

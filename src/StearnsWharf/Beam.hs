@@ -52,13 +52,13 @@ data Beam a
 
 instance Eq (BeamProp a) where
   (==) bp1 bp2 =
-    ((beamId bp1) == (beamId bp2))
-      && ((n1 bp1) == (n1 bp2))
-      && ((n2 bp1) == (n2 bp2))
-      && ((limitStates bp1) == (limitStates bp2))
+    bp1.beamId == bp2.beamId
+      && bp1.n1 == bp2.n1
+      && bp1.n2 == bp2.n2
+      && bp1.limitStates == bp2.limitStates
 
 instance Ord (BeamProp a) where
-  compare bp1 bp2 = compare (beamId bp1) (beamId bp2)
+  compare bp1 bp2 = compare bp1.beamId bp2.beamId
 
 instance Eq (Beam a) where
   (==) (Bjlk33 b1) (Bjlk33 b2) = b1 == b2
@@ -153,8 +153,8 @@ createK_ beam =
 
 createSY :: Geom -> Load -> Vector Double
 createSY (Geom _ _ len) load =
-  let q1 = (L.qz1 load)
-      q2 = (L.qz2 load)
+  let q1 = load.qz1
+      q2 = load.qz2
       f = len / 60.0
       s0 = 0.0
       s1 = ((-21.0) * q1 - (9.0 * q2)) * f
@@ -173,9 +173,9 @@ emptySY :: Vector Double
 emptySY = L.fromList [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 calcGeom :: Beam a -> Geom
-calcGeom (Bjlk33 beam) = N.calcGeom (n1 beam) (n2 beam)
-calcGeom (Bjlk11 beam) = N.calcGeom (n1 beam) (n2 beam)
-calcGeom (Bjlk32 beam) = N.calcGeom (n1 beam) (n2 beam)
+calcGeom (Bjlk33 beam) = N.calcGeom beam.n1 beam.n2
+calcGeom (Bjlk11 beam) = N.calcGeom beam.n1 beam.n2
+calcGeom (Bjlk32 beam) = N.calcGeom beam.n1 beam.n2
 
 tg :: Cosine -> Sine -> Matrix Double
 tg (Cosine c) (Sine s) =

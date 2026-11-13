@@ -24,11 +24,11 @@ data StrengthClass
   deriving (Show)
 
 data MaterialProperties = MaterialProperties
-  { emodulus
-    , mySigma
-    , myTau ::
-      Double
-  , stClass :: StrengthClass
+  { emodulus,
+    mySigma,
+    myTau ::
+      Double,
+    stClass :: StrengthClass
   }
   deriving (Show)
 
@@ -42,9 +42,9 @@ data Material
   deriving (Show)
 
 data WoodProfile = WoodProfile
-  { width :: Width
-  , height :: Height
-  , matr :: Material
+  { width :: Width,
+    height :: Height,
+    matr :: Material
   }
   deriving (Show)
 
@@ -76,15 +76,15 @@ createWoodProfile stc w h = case stc of
   TEST_CLASS -> WoodProfile w h (Material Wood (MaterialProperties 1000 10 1.0 stc))
 
 instance Profile WoodProfile where
-  desc WoodProfile{matr = (Material wcat mp)} =
-    "Wood Profile: " ++ (show wcat) ++ ", " ++ (show $ stClass mp)
+  desc WoodProfile {matr = (Material wcat mp)} =
+    "Wood Profile: " ++ (show wcat) ++ ", " ++ (show $ mp.stClass)
   sigma wp (StaticMoment moment) = moment / (1000.0 * (P.sectionModulus wp))
   tau wp (Shear shr) = (3.0 * shr) / (2000.0 * (P.area wp))
-  area WoodProfile{width = Width w, height = Height h} = (w * h) / 1000000.0
-  emodulus WoodProfile{matr = (Material _ mp)} = (emodulus mp) * 1000.0
-  secondAreaMoment WoodProfile{width = Width w, height = Height h} = ((w / 1000) * ((h / 1000) ** 3)) / 12.0
-  sectionModulus WoodProfile{width = Width w, height = Height h} = ((w / 1000) * ((h / 1000) ** 2)) / 6.0
-  centroid WoodProfile{height = Height h} = h / 2000.0
+  area WoodProfile {width = Width w, height = Height h} = (w * h) / 1000000.0
+  emodulus WoodProfile {matr = (Material _ mp)} = mp.emodulus * 1000.0
+  secondAreaMoment WoodProfile {width = Width w, height = Height h} = ((w / 1000) * ((h / 1000) ** 3)) / 12.0
+  sectionModulus WoodProfile {width = Width w, height = Height h} = ((w / 1000) * ((h / 1000) ** 2)) / 6.0
+  centroid WoodProfile {height = Height h} = h / 2000.0
 
 {-
 desc _ = "Wood Profile"

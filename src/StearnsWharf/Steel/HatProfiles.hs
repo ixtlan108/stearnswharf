@@ -7,12 +7,13 @@
 module StearnsWharf.Steel.HatProfiles where
 
 import StearnsWharf.Common
-  ( StaticMoment (..)
+  ( StaticMoment (..),
   )
 import qualified StearnsWharf.Profile as P
 import qualified StearnsWharf.Steel.HUP as H
 import qualified StearnsWharf.Steel.Plates as Pl
 
+{-
 data HatProfile
   = -- | Hatteprofil m/ HUP og gj.gående bunnplate
     HatProfileA
@@ -108,17 +109,17 @@ instance P.Profile HatProfile where
             huc = (P.centroid hup)  + ((Pl.h plate) / 1000.0)
             pca = pc * (P.area plate)
             huca = huc * (P.area hup)
-  centroid hat@TEHP { .. } = 
-    let 
+  centroid hat@TEHP { .. } =
+    let
       dBottom = P.centroid botPl
       dWeb = Pl.h botPl + P.centroid webPl
-      dTop = Pl.h botPl 
+      dTop = Pl.h botPl
     in
       dBottom / 1000.0
 
       -- ((ct*at) + (cw*aw) + (cb*ab)) / area
       -- where hb = (Pl.h botPl) / 1000.0
-      --       hw = webHeight hat 
+      --       hw = webHeight hat
       --       ct = hw + hb - (P.centroid topPl)
       --       cw = (P.centroid webPl) + ((Pl.h botPl) / 2000.0)
       --       cb = P.centroid botPl
@@ -134,3 +135,4 @@ totalHeight TEHP{ .. } = (Pl.h webPl + Pl.h botPl + Pl.h topPl) / 1000.0
 -- | Total høyde på "hatten" over bunnplaten
 webHeight :: HatProfile -> Double
 webHeight TEHP{webPl} = Pl.h webPl / 1000.0
+-}
