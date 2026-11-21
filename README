@@ -87,6 +87,11 @@
                 set #uid 42 user
 
                 
+7) Testing:
+
+        7.1) Only run tests that match the input:
+
+                cabal test --test-show-details=direct --test-option="--match=NodeSpec"   
         
 ## Beregning – IPE-profil, 2 m spennvidde, 9,75 kN/m
 

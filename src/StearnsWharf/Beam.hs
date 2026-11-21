@@ -9,9 +9,9 @@ module StearnsWharf.Beam where
 
 import Control.Monad.ST (ST)
 import Numeric.LinearAlgebra (Matrix, Vector, (#>), (<>), (|>))
-import qualified Numeric.LinearAlgebra as L
+import Numeric.LinearAlgebra qualified as L
 import Numeric.LinearAlgebra.Devel (STMatrix, STVector)
-import qualified Numeric.LinearAlgebra.Devel as D
+import Numeric.LinearAlgebra.Devel qualified as D
 -- import qualified StearnsWharf.Materials as M
 -- import StearnsWharf.Common (Cosine(..),(Sine..))
 
@@ -20,16 +20,16 @@ import StearnsWharf.Common
     Sine (..),
   )
 import StearnsWharf.Load (LimitStates, Load (..))
-import qualified StearnsWharf.Load as L
+import StearnsWharf.Load qualified as L
 import StearnsWharf.Node
   ( FirstNode (..),
     Geom (..),
     Node (..),
     SecondNode (..),
   )
-import qualified StearnsWharf.Node as N
+import StearnsWharf.Node qualified as N
 import StearnsWharf.Profile (Profile)
-import qualified StearnsWharf.Profile as P
+import StearnsWharf.Profile qualified as P
 import Prelude hiding ((<>))
 
 -- newtype BeamId = BeamId String deriving (Show)
