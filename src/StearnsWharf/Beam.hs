@@ -1,7 +1,3 @@
-{-# LANGUAGE CPP #-}
-{-# LANGUAGE NamedFieldPuns #-}
-{-# LANGUAGE RecordWildCards #-}
-
 module StearnsWharf.Beam where
 
 -- import Data.Maybe (fromJust)
@@ -24,6 +20,7 @@ import StearnsWharf.Load qualified as L
 import StearnsWharf.Node
   ( FirstNode (..),
     Geom (..),
+    IndexPair (..),
     Node (..),
     SecondNode (..),
   )
@@ -187,6 +184,16 @@ tg (Cosine c) (Sine s) =
       [0, 0, 0, -s, c, 0],
       [0, 0, 0, 0, 0, 1]
     ]
+
+getBeamProp :: Beam a -> BeamProp a
+getBeamProp (Bjlk33 bp) = bp
+getBeamProp (Bjlk11 bp) = bp
+getBeamProp (Bjlk32 bp) = bp
+
+indexSeeds :: Beam a -> [IndexPair]
+indexSeeds beam =
+  let p = getBeamProp beam
+   in N.indexSeeds p.n1 p.n2
 
 add2systemK :: (Profile a) => STMatrix s Double -> Beam a -> ST s ()
 add2systemK m beam =

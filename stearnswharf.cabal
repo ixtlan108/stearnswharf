@@ -58,12 +58,10 @@ library
     containers,
     hmatrix,
     hspec,
-    HUnit,
     mtl,
     optparse-applicative,
     postgresql-simple,
     utf8-string,
-    xml,
     yaml
 
   default-language: GHC2024
@@ -95,13 +93,11 @@ executable stearnswharf-2.0.0
     containers,
     hmatrix,
     hspec,
-    HUnit,
     mtl,
     optparse-applicative,
     postgresql-simple,
     stearnswharf,
     utf8-string,
-    xml,
     yaml
 
   default-language: GHC2024
@@ -142,13 +138,11 @@ test-suite stearnswharf-test
     containers,
     hmatrix,
     hspec,
-    HUnit,
     mtl,
     optparse-applicative,
     postgresql-simple,
     stearnswharf,
     utf8-string,
-    xml,
     yaml
 
   build-tool-depends: hspec-discover:hspec-discover
